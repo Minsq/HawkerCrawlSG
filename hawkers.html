@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hawkers Huat - Here We Come</title>
+<!-- icon from iconsSG -->
+<link rel="icon" href="https://on26thstreet.files.wordpress.com/2014/11/chope.png">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+<!-- Style to put some height on the map -->
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+#map_canvas { height: 100% }
+</style>
+
+<!-- Load the Google Maps API -->
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
+
+<!-- Load jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- All of the script for multiple requests -->
+<script>
+    
+    // inspiration from http://jsfiddle.net/doktormolle/brepbvww/
+
+    $(window).on('load', function () {
+
+    var places={
+    cluster_1:{
+    label:'Northies',
+    //the category may be default-checked when you want to
+    //uncomment the next line
+    // checked:true,
+    icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png' ,
+    colors: "#228B22",
+    items: [["Bugis MRT", 1.3011, 103.8561], 
+    ["Blk 320 Shunfu Road", 1.35191, 103.83703], 
+    ["Blk 226H Ang Mo Kio Street 22", 1.36717999999999, 103.84004], 
+    ["Blk 724 Ang Mo Kio Ave 6", 1.37218, 103.84651], 
+    ["Blk 527 Ang Mo Kio Ave 10", 1.3728, 103.85446], 
+    ["Blk 453A Ang Mo Kio Ave 10", 1.36822999999999, 103.85636], 
+    ["Blk 409 Ang Mo Kio Ave 10", 1.36261, 103.8552799], 
+    ["Blk 341 Ang Mo Kio Ave 1", 1.3641, 103.8482499], 
+    ["Blk 226D Ang Mo Kio Ave 1", 1.3668, 103.83919], 
+    ["Sembawang Hill Food Centre", 1.37257, 103.82887], 
+    ["Blks 160/162 Ang Mo Kio Ave 4", 1.37453999999999, 103.83917], 
+    ["Blk 628 Ang Mo Kio Ave 4", 1.38097, 103.8406399], 
+    ["Blk 4A Woodlands Centre Road", 1.44099, 103.76999], 
+    ["Blks 20/21 Marsiling Lane", 1.44342, 103.77696], 
+    ["Chong Pang Market & Food Centre", 1.43169, 103.82859], 
+    ["Chomp Chomp Food Centre", 1.36423989999999, 103.86649], 
+    ["Serangoon Garden Market", 1.36366, 103.86673], 
+    ["Bugis MRT", 1.3011, 103.8561]],
+
+    },
+
+    cluster_2:{
+    label:'Westies',
+    icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png',
+    colors: "#000000",
+    items: [["Bugis MRT", 1.3011, 103.8561], 
+            ["Blk 353 Clementi Ave 2", 1.31437, 103.77077], 
+            ["Blk 448 Clementi Ave 3", 1.31318, 103.7645299], 
+            ["Blk 726 Clementi West Street 2", 1.30377, 103.7645], 
+            ["Blk 502 West  Coast Drive", 1.3119, 103.759019999999], 
+            ["Blk 503 West Coast Drive", 1.31181, 103.75973], 
+            ["Blk 37A Teban Gardens Road", 1.32081, 103.74276], 
+            ["Taman Jurong Market & Food Centre", 1.33467999999999, 103.72135], 
+            ["Blk 505 Jurong West Street 52", 1.34969, 103.71842], 
+            ["Blks 221 A/B Boon Lay Place", 1.34637, 103.7125], 
+            ["Blk 347 Jurong East Ave 1", 1.34528999999999, 103.7315], 
+            ["Blk 254 Jurong East Street 24", 1.34347, 103.73779], 
+            ["Bukit Timah Market", 1.33946, 103.776], 
+            ["Bugis MRT", 1.3011, 103.8561]]
+    },
+    cluster_3:{
+    label:'Easties',
+    icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png',
+    colors: "#FFA500",
+    items: [["Bugis MRT", 1.3011, 103.8561], 
+    ["Blk 84 Marine Parade Central", 1.30227, 103.906309999999], 
+    ["Blk 50A Marine Terrace", 1.30575, 103.91569], 
+    ["Dunman Food Centre", 1.30942, 103.90183], 
+    ["Blk 4A Eunos Crescent", 1.32034, 103.90424], 
+    ["Blk 630 Bedok Reservoir Road", 1.33292, 103.91412], 
+    ["Blk 538 Bedok North Street 3", 1.33203989999999, 103.9246299], 
+    ["Blk 511 Bedok North Street 3", 1.33325, 103.93059], 
+    ["Blk 216 Bedok North Street 1", 1.32705989999999, 103.9332], 
+    ["Blk 208B New Upper Changi Road", 1.32525, 103.93136], 
+    ["Blk 58 New Upper Changi Road", 1.32419, 103.94111], 
+    ["Blk 85 Bedok North Street 4", 1.33197, 103.938769999999], 
+    ["Blk 137 Tampines Street 11", 1.34562, 103.94485], 
+    ["Blks 2 & 3 Changi Village Road", 1.38915, 103.98823], 
+    ["Bedok Food Centre", 1.32035, 103.955469999999], 
+    ["Blk 16 Bedok South Road", 1.3205, 103.93545], 
+    ["East Coast Lagoon Food Village", 1.30703, 103.93508], 
+    ["Bugis MRT", 1.3011, 103.8561]]
+    },
+
+    cluster_4:{
+    label:'North Easties',
+
+    icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png',
+    colors: "#800000",
+    items: [["Bugis MRT", 1.3011, 103.8561], 
+    ["North Bridge Road Market & Food Centre", 1.30578, 103.86389], 
+    ["Golden Mile Food Centre", 1.30324, 103.86384], 
+    ["Berseh Food Centre", 1.30752, 103.85676], 
+    ["Blk 29 Bendemeer Road", 1.31924, 103.86305], 
+    ["Blk 69 Geylang Bahru", 1.32144, 103.87004], 
+    ["Blk 17 Upper Boon Keng Road", 1.31504, 103.87159], 
+    ["Blk 4A Jalan Batu", 1.30242, 103.8839], 
+    ["Blk 51 Old Airport Road", 1.30817, 103.8857], 
+    ["Kallang Estate Market", 1.30708999999999, 103.88416], 
+    ["Blks 13/14 Haig Road", 1.31501, 103.89542], 
+    ["Geylang Serai Market", 1.31766989999999, 103.898209999999], 
+    ["Blk 117 Aljunied Ave 2", 1.32066, 103.88719], 
+    ["Blk 49 Sims Place", 1.31705, 103.87929], 
+    ["Blks 79/79A Circuit Road", 1.32528999999999, 103.884869999999], 
+    ["Blk 89 Circuit Road", 1.32365, 103.88539], 
+    ["Blk 80 Circuit Road", 1.32785, 103.887059999999], 
+    ["Blk 105 Hougang Ave 1", 1.35402, 103.89012], 
+    ["Kovan Market & Food Centre", 1.35909, 103.88604], 
+    ["Blk 74 Toa Payoh Lorong 4", 1.33454, 103.85198], 
+    ["Blk 75 Toa Payoh Lorong 5", 1.33603989999999, 103.85294], 
+    ["Blk 93 Toa Payoh Lorong 4", 1.33847989999999, 103.84949], 
+    ["Blk 127 Toa Payoh Lorong 1", 1.33809, 103.8447], 
+    ["Blk 22 Toa Payoh Lorong 7", 1.33524, 103.85703], 
+    ["Blk 210 Toa Payoh Lorong 8", 1.34027, 103.854369999999], 
+    ["Blk 90 Whampoa Drive", 1.32308, 103.85497], 
+    ["Blks 91/92 Whampoa Drive", 1.32342999999999, 103.85404], 
+    ["Pek Kio Market & Food Centre", 1.31608, 103.85028], 
+    ["Tekka Market", 1.30661989999999, 103.85077], 
+    ["Albert Centre Market & Food Centre", 1.3011, 103.8541], 
+    ["Bugis MRT", 1.3011, 103.8561]]
+    },
+    cluster_0:{
+    label:'Southernist',
+    icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_orange.png',
+    colors: "#ed1e29",
+    items: [["Bugis MRT", 1.3011, 103.8561], 
+    ["Market Street Food Centre", 1.28386, 103.85007], 
+    ["Chinatown Market", 1.28217999999999, 103.84317], 
+    ["People's Park Food Centre", 1.28491, 103.84255], 
+    ["Hong Lim Market & Food Centre", 1.28536, 103.84586], 
+    ["Maxwell Food Centre", 1.28035, 103.84472], 
+    ["Amoy Street Food Centre", 1.27718019999999, 103.846579], 
+    ["Blk 6 Tanjong Pagar Plaza", 1.27662, 103.84314], 
+    ["Blk 112 Jalan Bukit Merah", 1.28001, 103.82599], 
+    ["Blk 1 Jalan Kukoh", 1.28826, 103.839919999999], 
+    ["Zion Riverside Food Centre", 1.29241, 103.83114], 
+    ["Beo Crescent Market", 1.28871, 103.82737], 
+    ["Blks 22A/B Havelock Road", 1.28875989999999, 103.82881], 
+    ["Tiong Bahru Market", 1.28473, 103.83245], 
+    ["Blk 115 Bukit Merah View", 1.28518, 103.82229], 
+    ["Blk 79 Redhill Lane", 1.28785, 103.81832], 
+    ["Blk 85 Redhill Lane", 1.28734, 103.81832], 
+    ["ABC Brickworks Market & Food Centre", 1.28695, 103.80811], 
+    ["Blk 163 Bukit Merah Central", 1.28369, 103.81703], 
+    ["Blk 11 Telok Blangah Crescent", 1.27751, 103.81865], 
+    ["Blk 36 Telok Blangah Rise", 1.27241, 103.8218799], 
+    ["Blk 82 Telok Blangah Drive", 1.27392, 103.80792], 
+    ["Blk 79 Telok Blangah Drive", 1.27336989999999, 103.8075999], 
+    ["Pasir Panjang Food Centre", 1.27593, 103.79134], 
+    ["Alexandra Village Food Centre", 1.28637999999999, 103.80461], 
+    ["Blk 159 Mei Chin Road", 1.29324, 103.80288], 
+    ["Commonwealth Crescent Market", 1.30714, 103.80044], 
+    ["Holland Village Market & Food Centre", 1.31107, 103.794919999999], 
+    ["Blk 20 Ghim Moh Road", 1.311, 103.788209999999], 
+    ["Blk 44 Holland Drive", 1.30813, 103.79276], 
+    ["Blks 1A/ 2A/ 3A Commonwealth Drive", 1.29972999999999, 103.79783], 
+    ["Tanglin Halt Market", 1.30036, 103.7979], 
+    ["Blk 7 Empress Road", 1.31625, 103.80561], 
+    ["Adam Road Food Centre", 1.32413, 103.81419], 
+    ["Newton Food Centre", 1.31213, 103.83933], 
+    ["Bugis MRT", 1.3011, 103.8561]]
+    }       
+    
+    },
+
+
+    homeLatlng = new google.maps.LatLng(1.3011,103.8561),
+    myOptions = {
+    zoom: 15,
+    center: homeLatlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+},
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions),
+
+    infowindow = new google.maps.InfoWindow(),
+  
+      // a  div where we will place the buttons
+      check_box=$('<div/>').css({background:'#fff',
+                            border:'1px solid #000',
+                            padding:'4px',
+                            margin:'2px',
+                            textAlign:'center'
+                           });
+      //show all-button
+      check_box.append($('<input>',{type:'button',value:'show all'})
+                    .click(function(){
+                      $(this).parent().find('input[type="checkbox"]')
+                        .prop('checked',true).trigger('change');
+                    }));
+      check_box.append($('<br/>'));
+      
+      //clear all-button
+      check_box.append($('<input>',{type:'button',value:'clear all'})
+                    .click(function(){
+                      $(this).parent().find('input[type="checkbox"]')
+                        .prop('checked',false).trigger('change');
+                    }));
+      check_box.append($('<hr/>'));
+      
+      //now loop over the categories
+      $.each(places,function(c,category){
+        console.log(places);
+        
+        //a checkbox fo the category
+        var cat=$('<input>',{type:'checkbox'}).change(function(){
+           $(this).data('hawkers').set('map',(this.checked)?map:null);
+        })
+          //create a data-property with a google.maps.MVCObject
+          //this MVC-object will do all the show/hide for the category 
+          .data('hawkers',new google.maps.MVCObject)
+          .prop('checked',!!category.checked)
+          
+          //this will initialize the map-property of the MVCObject
+          .trigger('change')
+          
+          //label for the checkbox
+          .appendTo($('<div/>').css({whiteSpace:'nowrap',textAlign:'left'}).appendTo(check_box))
+          .after(category.label);
+          
+          // create an array for the paths (or coordinates)
+          var arrCoords = new google.maps.MVCArray();
+
+          //loop over the items(markers)
+          $.each(category.items,function(m,item){
+
+             
+             var marker=new google.maps.Marker({
+                    position:new google.maps.LatLng(item[1],item[2]),
+                    title:item[0],
+                    icon:category.icon
+                  });
+
+             //bind the map-property of the marker to the map-property
+             //of the MVCObject that has been stored as checkbox-data 
+             marker.bindTo('map',cat.data('hawkers'),'map');
+             google.maps.event.addListener(marker,'click',function(){
+                infowindow.setContent(item[0]);
+                infowindow.open(map,this);
+                
+             });
+
+             //append the current destination to arrCoords
+             var point = new google.maps.LatLng(item[1], item[2])
+             arrCoords.push(point);
+
+
+          });
+
+        // create polylines with the set of path array
+        var route = new google.maps.Polyline({
+            path: arrCoords,
+            strokeColor: category.colors,
+            strokeOpacity: 1.0,
+            strokeWeight: 3,
+            geodesic: false,
+            icons: [{
+                icon: {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW},
+                offset: '100%',
+                repeat: '100px'
+            }],
+            map: map
+            });
+
+        // bind each route to the checkboxes
+        route.bindTo('map',cat.data('hawkers'),'map');
+        // });
+
+    
+
+     //use the buttons-div as map-control 
+     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(check_box[0]);
+      
+            
+    });
+    }
+    );
+
+    
+
+</script>
+
+</head>
+<body>
+  <div id="map_canvas"></div>
+</body>
+</html>
